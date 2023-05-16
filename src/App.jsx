@@ -35,25 +35,83 @@ Ao enviar, deve-se apresentar um alert javascript com sucesso, limpar todos os c
 do formulário e zerar a barra de progresso novamente.
 */
 
+
+import { useState } from "react";
+
+
+
 function App() {
+
+  const [data, setData] = useState({
+    fullName: '',
+    //dogName: '',
+    email: '',
+    maritalStatus: '',
+    gender: ''
+  })
+
+
+  const handleOnChange = (event) => {
+    const {value, name} = event.target
+
+    setData((oldData) => {
+      const newData = {...data, [name]: value}
+      return newData
+    })
+  }
+
+  const calculateBarProgress = () => {
+    //pegar os elementos do objeto data (feature do < ECS6)
+    const dataElements = Object.keys(data)
+
+    //numero total de elementos do objeto
+    const totalElements = dataElements.length
+
+    //contador de elementos preenchidos
+    let filledElements = 0
+
+    //loop para percorrer cada elemento e verificar se ta vazio ou preenchido
+    dataElements.forEach((element) => {
+      if(data[element]) {
+        filledElements++
+      }
+    })
+    //retornando o valor em porcentagem de elementos preenchidos
+    return((filledElements/totalElements)*100)
+  }
+
   return (
     <div className='App'>
       <h3>desafio fernandev</h3>
       <h1>progresso do formulário</h1>
 
       <main>
-        {/* crie a barra de progresso aqui */}
+        <div className="bar-container">
+          <div className="bar" style={{width: `${calculateBarProgress()}%`}} />
+        </div>
         <div className='form-group'>
           <label htmlFor=''>Nome Completo</label>
-          <input />
+          <input
+            name="fullName"
+            value={data.fullName}
+            onChange={handleOnChange}
+          />
         </div>
         <div className='form-group'>
           <label htmlFor=''>E-mail</label>
-          <input />
+          <input
+            name="email"
+            value={data.email}
+            onChange={handleOnChange}
+          />
         </div>
         <div className='form-group'>
           <label htmlFor=''>Estado Civil</label>
-          <select>
+          <select
+            name="maritalStatus"
+            value={data.maritalStatus}
+            onChange={handleOnChange}
+          >
             <option value=''>- selecione...</option>
             <option value='solteiro'>Solteiro</option>
             <option value='casado'>Casado</option>
@@ -64,10 +122,22 @@ function App() {
           <label htmlFor=''>Gênero</label>
           <div className='radios-container'>
             <span>
-              <input type='radio' /> Masculino
+              <input
+                type='radio'
+                name="gender"
+                value="masculino"
+                onChange={handleOnChange}
+                checked={data.gender === "masculino"}
+              /> Masculino
             </span>
             <span>
-              <input type='radio' /> Feminino
+              <input
+                type='radio'
+                name="gender"
+                value="feminino"
+                onChange={handleOnChange}
+                checked={data.gender === "feminino"} 
+              /> Feminino
             </span>
           </div>
         </div>
