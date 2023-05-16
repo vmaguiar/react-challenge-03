@@ -90,19 +90,21 @@ button {
   height: 40px;
   width: 100%;
   font-size: 16px;
-  color: #333;
+  color: #fff;
+  background: rgb(71, 196, 71);
 }
 
 button:hover {
-  background: #ddd;
+  background: #62e97f;
   cursor: pointer;
 }
-button:active {
-  background: #333;
+/* button:active {
+  background: #333333;
   color: white;
-}
+} */
 button:disabled {
   color: #aaa;
+  background: #8a8888;
 }
 button:disabled:hover {
   cursor: not-allowed;
