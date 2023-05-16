@@ -60,6 +60,18 @@ function App() {
     })
   }
 
+  const handleOnClick = () => {
+    alert('Formulário enviado com sucesso')
+
+    setData({
+      fullName: '',
+      //dogName: '',
+      email: '',
+      maritalStatus: '',
+      gender: ''
+    })
+  }
+
   const calculateBarProgress = () => {
     //pegar os elementos do objeto data (feature do < ECS6)
     const dataElements = Object.keys(data)
@@ -73,7 +85,27 @@ function App() {
     //loop para percorrer cada elemento e verificar se ta vazio ou preenchido
     dataElements.forEach((element) => {
       if(data[element]) {
-        filledElements++
+        //para os casos que precisam de validação há um case, se não segue o padrão
+        switch(element){
+          case 'fullName':
+            const explodeString = data[element].split(' ')
+            if(explodeString[1]) {
+              filledElements++
+              break
+            }
+            break
+          
+          case 'email':
+            let regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if(regex.test(data[element])) {
+              filledElements++
+              break
+            }
+            break
+
+          default:
+            filledElements++
+        }
       }
     })
     //retornando o valor em porcentagem de elementos preenchidos
@@ -141,7 +173,12 @@ function App() {
             </span>
           </div>
         </div>
-        <button>Enviar Formulário</button>
+        <button
+          onClick={handleOnClick}
+          disabled={calculateBarProgress() < 100}
+        >
+          Enviar Formulário
+        </button>
       </main>
     </div>
   );
